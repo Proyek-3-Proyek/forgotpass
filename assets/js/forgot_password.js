@@ -16,6 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Tampilkan loading
+    let loading;
+    Swal.fire({
+      title: "Mengirim...",
+      text: "Harap tunggu sementara kami memproses permintaan Anda.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+        loading = Swal;
+      },
+    });
+
     try {
       // Kirim permintaan ke endpoint request-reset-password
       const response = await fetch(
@@ -31,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await response.json();
       console.log("Forgot Password Response:", result); // Debugging
+
+      // Tutup loading
+      loading.close();
 
       if (response.ok) {
         // Simpan email ke localStorage
@@ -52,6 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error:", error);
+
+      // Tutup loading
+      loading.close();
+
       Swal.fire({
         icon: "error",
         title: "Kesalahan",

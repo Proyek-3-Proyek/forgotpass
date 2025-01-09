@@ -30,6 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Tampilkan loading
+    let loading;
+    Swal.fire({
+      title: "Memverifikasi...",
+      text: "Harap tunggu sementara kami memproses kode OTP Anda.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+        loading = Swal;
+      },
+    });
+
     try {
       const response = await fetch(
         "https://backend-eight-phi-75.vercel.app/api/auth/verify-otp",
@@ -44,6 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await response.json();
       console.log("Verify Response:", result); // Debugging
+
+      // Tutup loading
+      loading.close();
 
       if (response.ok) {
         Swal.fire({
@@ -62,6 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error:", error);
+
+      // Tutup loading
+      loading.close();
+
       Swal.fire({
         icon: "error",
         title: "Kesalahan",
@@ -73,6 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event Listener untuk Kirim Ulang OTP
   const resendOtpButton = document.getElementById("resendOtpButton");
   resendOtpButton.addEventListener("click", async () => {
+    // Tampilkan loading
+    let loading;
+    Swal.fire({
+      title: "Mengirim ulang...",
+      text: "Harap tunggu sementara kami mengirim ulang OTP.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+        loading = Swal;
+      },
+    });
+
     try {
       const resendResponse = await fetch(
         "https://backend-eight-phi-75.vercel.app/api/auth/request-reset-password",
@@ -87,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const resendResult = await resendResponse.json();
       console.log("Resend OTP Response:", resendResult); // Debugging
+
+      // Tutup loading
+      loading.close();
 
       if (resendResponse.ok) {
         Swal.fire({
@@ -103,6 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error:", error);
+
+      // Tutup loading
+      loading.close();
+
       Swal.fire({
         icon: "error",
         title: "Kesalahan",

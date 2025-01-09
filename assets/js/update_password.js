@@ -41,6 +41,18 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Email:", email); // Debugging: Lihat email yang akan dikirim
     console.log("Password Baru:", newPassword); // Debugging: Lihat password baru
 
+    // Tampilkan loading
+    let loading;
+    Swal.fire({
+      title: "Mengubah Password...",
+      text: "Harap tunggu sementara kami memproses permintaan Anda.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+        loading = Swal;
+      },
+    });
+
     try {
       // Kirim permintaan untuk reset password
       const response = await fetch(
@@ -60,6 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
       console.log("Reset Password Response:", result); // Debugging: Lihat respons API
 
+      // Tutup loading
+      loading.close();
+
       if (response.ok) {
         Swal.fire({
           icon: "success",
@@ -77,6 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error:", error);
+
+      // Tutup loading
+      loading.close();
+
       Swal.fire({
         icon: "error",
         title: "Kesalahan",
