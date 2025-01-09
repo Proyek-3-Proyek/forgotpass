@@ -2,10 +2,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const forgotPasswordForm = document.getElementById("forgotPasswordForm");
 
   forgotPasswordForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Mencegah form melakukan submit default
+
     const email = document.getElementById("email").value;
 
+    // Validasi Email
+    if (!email) {
+      Swal.fire({
+        icon: "warning",
+        title: "Peringatan",
+        text: "Harap masukkan email Anda!",
+      });
+      return;
+    }
+
     try {
+      // Kirim permintaan ke endpoint request-reset-password
       const response = await fetch(
         "https://backend-eight-phi-75.vercel.app/api/auth/request-reset-password",
         {
@@ -18,15 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       const result = await response.json();
+      console.log("Forgot Password Response:", result); // Debugging
 
       if (response.ok) {
-        localStorage.setItem("email", email); // Simpan email untuk halaman berikutnya
+        // Simpan email ke localStorage
+        localStorage.setItem("email", email);
+
         Swal.fire({
           icon: "success",
           title: "Berhasil",
-          text: "OTP telah dikirim ke email Anda.",
+          text: "Kode OTP telah dikirim ke email Anda.",
         }).then(() => {
-          window.location.href = "/OTP.html"; // Redirect ke halaman OTP
+          window.location.href = "/forgotpass/OTP"; // Redirect ke halaman OTP
         });
       } else {
         Swal.fire({

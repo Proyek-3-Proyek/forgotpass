@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Kesalahan",
       text: "Email tidak ditemukan. Silakan ulangi proses lupa password.",
     });
-    window.location.href = "/index.html";
+    window.location.href = "/login";
     return;
   }
 

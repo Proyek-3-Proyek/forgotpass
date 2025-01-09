@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
           title: "Berhasil",
           text: "OTP berhasil diverifikasi.",
         }).then(() => {
-          window.location.href = "/update_password.html"; // Redirect ke halaman update password
+          window.location.href = "/forgotpass/update_password"; // Redirect ke halaman update password
         });
       } else {
         Swal.fire({
