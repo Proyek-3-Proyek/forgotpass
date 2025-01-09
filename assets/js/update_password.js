@@ -2,13 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const updatePasswordForm = document.getElementById("updatePasswordForm");
   const email = localStorage.getItem("email"); // Ambil email dari localStorage
 
+  // Periksa apakah email tersedia di localStorage
   if (!email) {
     Swal.fire({
       icon: "error",
       title: "Kesalahan",
       text: "Email tidak ditemukan. Silakan ulangi proses lupa password.",
     });
-    window.location.href = "/login";
+    window.location.href = "/forgot-password"; // Redirect ke halaman lupa password
     return;
   }
 
@@ -18,7 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const newPassword = document.getElementById("new-password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
 
-    // Validasi Password
+    // Validasi: Periksa apakah kedua password cocok
+    if (!newPassword || !confirmPassword) {
+      Swal.fire({
+        icon: "warning",
+        title: "Peringatan",
+        text: "Password baru dan konfirmasi password harus diisi.",
+      });
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
       Swal.fire({
         icon: "warning",
@@ -27,6 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       return;
     }
+
+    console.log("Email:", email); // Debugging: Lihat email yang akan dikirim
+    console.log("Password Baru:", newPassword); // Debugging: Lihat password baru
 
     try {
       // Kirim permintaan untuk reset password
@@ -37,12 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password: newPassword }),
+          body: JSON.stringify({
+            email: email, // Pastikan email dari localStorage valid
+            newPassword: newPassword, // Password baru sesuai format API
+          }),
         }
       );
 
       const result = await response.json();
-      console.log("Reset Password Response:", result); // Debugging
+      console.log("Reset Password Response:", result); // Debugging: Lihat respons API
 
       if (response.ok) {
         Swal.fire({
